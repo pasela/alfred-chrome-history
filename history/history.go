@@ -17,6 +17,7 @@ const (
 )
 
 type Entry struct {
+	ID            int
 	URL           string
 	Title         string
 	VisitCount    int
@@ -67,7 +68,7 @@ func (h *History) Query(url, title string) ([]Entry, error) {
 
 	rows, err := h.db.Query(`
 		SELECT
-			url, title, visit_count, typed_count, last_visit_time, hidden
+			id, url, title, visit_count, typed_count, last_visit_time, hidden
 		FROM
 			urls
 		WHERE
@@ -86,6 +87,7 @@ func (h *History) Query(url, title string) ([]Entry, error) {
 		var entry Entry
 		var visit int64
 		err := rows.Scan(
+			&entry.ID,
 			&entry.URL,
 			&entry.Title,
 			&entry.VisitCount,
