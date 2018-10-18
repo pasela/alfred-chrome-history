@@ -9,7 +9,7 @@ import (
 	"github.com/pasela/alfred-chrome-history/utils"
 )
 
-func queryHistory(url, title string) ([]history.Entry, error) {
+func queryHistory(profile, url, title string) ([]history.Entry, error) {
 	histFile := historyFile{
 		Profile: profile,
 		Clone:   false,

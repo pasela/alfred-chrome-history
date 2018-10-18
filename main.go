@@ -8,7 +8,6 @@ import (
 )
 
 var isAlfred bool
-var profile string
 
 func init() {
 	isAlfred = os.Getenv("alfred_workflow_bundleid") != ""

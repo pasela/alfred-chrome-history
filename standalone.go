@@ -7,8 +7,9 @@ import (
 )
 
 func run() error {
+	profile := os.Getenv("CHROME_PROFILE")
 	query := strings.Join(os.Args[1:], " ")
-	entries, err := queryHistory(query, query)
+	entries, err := queryHistory(profile, query, query)
 	if err != nil {
 		return err
 	}

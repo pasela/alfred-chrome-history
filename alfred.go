@@ -7,10 +7,20 @@ import (
 	aw "github.com/deanishe/awgo"
 )
 
+type WorkflowOptions struct {
+	Profile string `env:"CHROME_PROFILE"`
+}
+
 func runWithAlfred(wf *aw.Workflow) {
+	opts := WorkflowOptions{}
+	cfg := aw.NewConfig()
+	if err := cfg.To(&opts); err != nil {
+		panic(err)
+	}
+
 	args := wf.Args()
 	query := strings.Join(args, " ")
-	entries, err := queryHistory(query, query)
+	entries, err := queryHistory(opts.Profile, query, query)
 	if err != nil {
 		panic(err)
 	}
