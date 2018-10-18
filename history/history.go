@@ -82,23 +82,17 @@ func (h *History) Query(url, title string) ([]Entry, error) {
 	}
 	defer rows.Close()
 
+	return readEntries(rows)
+}
+
+func readEntries(rows *sql.Rows) ([]Entry, error) {
 	entries := make([]Entry, 0)
+
 	for rows.Next() {
 		var entry Entry
-		var visit int64
-		err := rows.Scan(
-			&entry.ID,
-			&entry.URL,
-			&entry.Title,
-			&entry.VisitCount,
-			&entry.TypedCount,
-			&visit,
-			&entry.Hidden,
-		)
-		if err != nil {
+		if err := scanEntry(rows, &entry); err != nil {
 			return nil, err
 		}
-		entry.LastVisitTime = convertChromeTime(visit)
 		entries = append(entries, entry)
 	}
 	if err := rows.Err(); err != nil {
@@ -106,6 +100,24 @@ func (h *History) Query(url, title string) ([]Entry, error) {
 	}
 
 	return entries, nil
+}
+
+func scanEntry(rows *sql.Rows, entry *Entry) error {
+	var visit int64
+	err := rows.Scan(
+		&entry.ID,
+		&entry.URL,
+		&entry.Title,
+		&entry.VisitCount,
+		&entry.TypedCount,
+		&visit,
+		&entry.Hidden,
+	)
+	if err != nil {
+		return err
+	}
+	entry.LastVisitTime = convertChromeTime(visit)
+	return nil
 }
 
 // https://code.google.com/p/chromium/codesearch#chromium/src/base/time/time.h
