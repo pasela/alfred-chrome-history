@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  digest = "1:4ee0fdce22e8f1653b7b0a3a743dcbce7542062bfc831835c216fdd8314eb59b"
+  name = "github.com/deanishe/awgo"
+  packages = [
+    ".",
+    "fuzzy",
+    "util",
+  ]
+  pruneopts = "UT"
+  revision = "fda4e59dbe6936fed9f4864b8f45cd18ad2c933c"
+  version = "v0.15"
+
+[[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -33,10 +45,26 @@
   revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
   version = "v1.0.3"
 
+[[projects]]
+  digest = "1:8029e9743749d4be5bc9f7d42ea1659471767860f0cdc34d37c3111bd308a295"
+  name = "golang.org/x/text"
+  packages = [
+    "internal/gen",
+    "internal/triegen",
+    "internal/ucd",
+    "transform",
+    "unicode/cldr",
+    "unicode/norm",
+  ]
+  pruneopts = "UT"
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/deanishe/awgo",
     "github.com/mattn/go-sqlite3",
     "github.com/spf13/cobra",
   ]
