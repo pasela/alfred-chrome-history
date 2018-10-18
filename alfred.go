@@ -9,6 +9,7 @@ import (
 
 type WorkflowOptions struct {
 	Profile string `env:"CHROME_PROFILE"`
+	Limit   int    `env:"LIMIT"`
 }
 
 func runWithAlfred(wf *aw.Workflow) {
@@ -20,7 +21,7 @@ func runWithAlfred(wf *aw.Workflow) {
 
 	args := wf.Args()
 	query := strings.Join(args, " ")
-	entries, err := queryHistory(opts.Profile, query, query)
+	entries, err := queryHistory(opts.Profile, query, query, opts.Limit)
 	if err != nil {
 		panic(err)
 	}

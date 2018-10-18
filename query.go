@@ -9,7 +9,7 @@ import (
 	"github.com/pasela/alfred-chrome-history/utils"
 )
 
-func queryHistory(profile, url, title string) ([]history.Entry, error) {
+func queryHistory(profile, url, title string, limit int) ([]history.Entry, error) {
 	histFile := historyFile{
 		Profile: profile,
 		Clone:   false,
@@ -27,7 +27,7 @@ func queryHistory(profile, url, title string) ([]history.Entry, error) {
 	}
 	defer his.Close()
 
-	return his.Query(url, title)
+	return his.Query(url, title, limit)
 }
 
 type historyFile struct {

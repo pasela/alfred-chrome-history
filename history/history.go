@@ -63,21 +63,32 @@ func (h *History) Close() error {
 	return h.db.Close()
 }
 
-func (h *History) Query(url, title string) ([]Entry, error) {
+func (h *History) Query(url, title string, limit int) ([]Entry, error) {
 	u := buildLikeValue(url)
 	t := buildLikeValue(title)
 
-	rows, err := h.db.Query(`
-		SELECT
-			id, url, title, visit_count, typed_count, last_visit_time, hidden
-		FROM
-			urls
-		WHERE
-			(title LIKE ? ESCAPE ? OR url LIKE ? ESCAPE ?)
-			AND hidden = 0
-		ORDER BY
-			visit_count DESC, typed_count DESC, last_visit_time DESC
-	`, u, string(escapeChar), t, string(escapeChar))
+	sql := `
+	SELECT
+		id, url, title, visit_count, typed_count, last_visit_time, hidden
+	FROM
+		urls
+	WHERE
+		(title LIKE ? ESCAPE ? OR url LIKE ? ESCAPE ?)
+		AND hidden = 0
+	ORDER BY
+		visit_count DESC, typed_count DESC, last_visit_time DESC
+	`
+	params := []interface{}{
+		u, string(escapeChar),
+		t, string(escapeChar),
+	}
+
+	if limit > 0 {
+		sql += ` LIMIT ?`
+		params = append(params, limit)
+	}
+
+	rows, err := h.db.Query(sql, params...)
 	if err != nil {
 		return nil, err
 	}
