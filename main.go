@@ -1,14 +1,29 @@
 package main
 
 import (
+	"log"
 	"os"
 
-	"github.com/pasela/alfred-chrome-history/commands"
+	aw "github.com/deanishe/awgo"
 )
 
+var isAlfred bool
+var profile string
+
+func init() {
+	isAlfred = os.Getenv("alfred_workflow_bundleid") != ""
+}
+
 func main() {
-	code := commands.Execute()
-	if code != 0 {
-		os.Exit(code)
+	if isAlfred {
+		wf := aw.New()
+		wf.Run(func() {
+			runWithAlfred(wf)
+		})
+	} else {
+		if err := run(); err != nil {
+			log.Print(err)
+			os.Exit(1)
+		}
 	}
 }
