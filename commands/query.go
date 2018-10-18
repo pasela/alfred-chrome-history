@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	aw "github.com/deanishe/awgo"
 	"github.com/pasela/alfred-chrome-history/history"
@@ -37,7 +38,7 @@ var queryCmd = &cobra.Command{
 }
 
 func runQueryCmd(cmd *cobra.Command, args []string) error {
-	query := args[0]
+	query := strings.Join(args, " ")
 	entries, err := runQuery(query, query)
 	if err != nil {
 		return err
@@ -52,7 +53,7 @@ func runQueryCmd(cmd *cobra.Command, args []string) error {
 func runQueryCmdAlfred(cmd *cobra.Command, args []string) error {
 	wf := aw.New()
 	wf.Run(func() {
-		query := args[0]
+		query := strings.Join(args, " ")
 		entries, err := runQuery(query, query)
 		if err != nil {
 			panic(err)

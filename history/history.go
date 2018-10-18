@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"net/url"
 	"path/filepath"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -63,8 +64,8 @@ func (h *History) Close() error {
 }
 
 func (h *History) Query(url, title string) ([]Entry, error) {
-	u := "%" + utils.EscapeLike(url, escapeChar) + "%"
-	t := "%" + utils.EscapeLike(title, escapeChar) + "%"
+	u := buildLikeValue(url)
+	t := buildLikeValue(title)
 
 	rows, err := h.db.Query(`
 		SELECT
@@ -83,6 +84,11 @@ func (h *History) Query(url, title string) ([]Entry, error) {
 	defer rows.Close()
 
 	return readEntries(rows)
+}
+
+func buildLikeValue(value string) string {
+	escaped := utils.EscapeLike(value, escapeChar)
+	return "%" + strings.Replace(escaped, " ", "%", -1) + "%"
 }
 
 func readEntries(rows *sql.Rows) ([]Entry, error) {
