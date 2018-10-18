@@ -10,6 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pasela/alfred-chrome-history/profile"
 	"github.com/pasela/alfred-chrome-history/utils"
+	"golang.org/x/text/unicode/norm"
 )
 
 const (
@@ -64,8 +65,8 @@ func (h *History) Close() error {
 }
 
 func (h *History) Query(url, title string, limit int) ([]Entry, error) {
-	u := buildLikeValue(url)
-	t := buildLikeValue(title)
+	u := buildLikeValue(norm.NFC.String(url))
+	t := buildLikeValue(norm.NFC.String(title))
 
 	sql := `
 	SELECT
