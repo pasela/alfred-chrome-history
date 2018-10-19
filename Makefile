@@ -2,6 +2,7 @@ PROJECT  = alfred-chrome-history
 TESTARGS ?= -v
 
 dist: build
+	rm -f $(PROJECT).alfredworkflow
 	(cd build && zip -r "../$(PROJECT).alfredworkflow" .)
 .PHONY: dist
 
