@@ -1,16 +1,22 @@
 PROJECT  = alfred-chrome-history
-TESTARGS ?= -v
+TESTARGS ?= -v -race -cover
 
+.PHONY: dist
 dist: build
 	rm -f $(PROJECT).alfredworkflow
 	(cd build && zip -r "../$(PROJECT).alfredworkflow" .)
-.PHONY: dist
 
+.PHONY: build
 build:
 	go build -o build/$(PROJECT) -ldflags="-s -w"
 	cp _workflow/* build/
-.PHONY: build
 
+.PHONY: clean
+clean:
+	go clean
+	rm -f $(PROJECT).alfredworkflow
+	rm build/*
+
+.PHONY: test
 test:
 	go test ./... $(TESTARGS)
-.PHONY: test
