@@ -1,9 +1,9 @@
 module github.com/pasela/alfred-chrome-history
 
-go 1.13
+go 1.16
 
 require (
-	github.com/deanishe/awgo v0.15.0
-	github.com/mattn/go-sqlite3 v1.9.0
-	golang.org/x/text v0.3.0
+	github.com/deanishe/awgo v0.28.0
+	github.com/mattn/go-sqlite3 v1.14.7
+	golang.org/x/text v0.3.5
 )
