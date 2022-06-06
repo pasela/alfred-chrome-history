@@ -70,12 +70,14 @@ func (h *History) Query(url, title string, limit int) ([]Entry, error) {
 
 	sql := `
 	SELECT
-		id, url, title, visit_count, typed_count, last_visit_time, hidden
+		id, url, title, SUM(visit_count), SUM(typed_count), MAX(last_visit_time), hidden
 	FROM
 		urls
 	WHERE
 		(title LIKE ? ESCAPE ? OR url LIKE ? ESCAPE ?)
 		AND hidden = 0
+  GROUP BY
+    title, SUBSTRING(url, 1, INSTR(url, '#') - 1)
 	ORDER BY
 		visit_count DESC, typed_count DESC, last_visit_time DESC
 	`
